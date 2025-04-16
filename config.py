@@ -17,9 +17,14 @@ class DevelopmentConfig(Config):
     PORT_HOST = 8000
     URL_MAIN = "http://%s:%s" % (IP_HOST, PORT_HOST)  # http://localhost:8000
 
-    DB_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "db")
-    SQLALCHEMY_DATABASE_URI = "sqlite:///{}".format(
-        os.path.join(DB_DIR, "Outsourcing_Dev.db")
+    # Configuração para MySQL
+    DB_USER = "root"
+    DB_PASSWORD = "[Sua_senha_aqui]"
+    DB_HOST = "localhost"
+    DB_PORT = 3306
+    DB_NAME = "outsourcing_dev"
+    SQLALCHEMY_DATABASE_URI = "mysql+pymysql://{}:{}@{}:{}/{}".format(
+        DB_USER, DB_PASSWORD, DB_HOST, DB_PORT, DB_NAME
     )
 
 
@@ -29,9 +34,14 @@ class TestingConfig(Config):
     PORT_HOST = 5000
     URL_MAIN = "http://%s:%s" % (IP_HOST, PORT_HOST)  # http://localhost:8000
 
-    DB_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "db")
-    SQLALCHEMY_DATABASE_URI = "sqlite:///{}".format(
-        os.path.join(DB_DIR, "Outsourcing_Test.db")
+    # Configuração para MySQL
+    DB_USER = "root"
+    DB_PASSWORD = "[Sua_senha_aqui]"
+    DB_HOST = "localhost"
+    DB_PORT = 3306
+    DB_NAME = "outsourcing_test"
+    SQLALCHEMY_DATABASE_URI = "mysql+pymysql://{}:{}@{}:{}/{}".format(
+        DB_USER, DB_PASSWORD, DB_HOST, DB_PORT, DB_NAME
     )
 
 
@@ -40,9 +50,14 @@ class ProductionConfig(Config):
     PORT_HOST = 8080
     URL_MAIN = "http://%s:%s" % (IP_HOST, PORT_HOST)  # http://127.0.0.1:8080
 
-    DB_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "db")
-    SQLALCHEMY_DATABASE_URI = "sqlite:///{}".format(
-        os.path.join(DB_DIR, "Outsourcing_Prod.db")
+    # Configuração para MySQL
+    DB_USER = "root"
+    DB_PASSWORD = "[Sua_senha_aqui]"
+    DB_HOST = "localhost"
+    DB_PORT = 3306
+    DB_NAME = "outsourcing_prod"
+    SQLALCHEMY_DATABASE_URI = "mysql+pymysql://{}:{}@{}:{}/{}".format(
+        DB_USER, DB_PASSWORD, DB_HOST, DB_PORT, DB_NAME
     )
 
 
