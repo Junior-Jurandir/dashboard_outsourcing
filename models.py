@@ -14,7 +14,7 @@ class Role(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), unique=True, nullable=False)
-    users = relationship("User", back_populates="função")
+    descricao = db.Column(db.String(250), nullable=False)
 
     def __repr__(self):
         return self.name
@@ -34,7 +34,7 @@ class User(db.Model, UserMixin):
         db.DateTime(6), onupdate=db.func.current_timestamp(), nullable=False
     )
     ativo = db.Column(db.Boolean, default=True, nullable=False)
-    role_id = db.Column(db.Integer, db.ForeignKey("roles.id"), nullable=False)
+    role = db.Column(db.Integer, db.ForeignKey(Role.id), nullable=False)
     funcao = relationship("Role")
 
     def __repr__(self):
@@ -42,6 +42,15 @@ class User(db.Model, UserMixin):
 
     def set_password(self, password):
         self.password = pbkdf2_sha256.hash(password)
+
+    def get_user_by_id(self, id):
+        return User.query.get(id)
+
+    def get_user_by_username(self, username):
+        return User.query.filter_by(username=username).first()
+
+    def get_user_by_email(self, email):
+        return User.query.filter_by(email=email).first()
 
     def hash_password(self, password):
         try:

@@ -1,16 +1,21 @@
 import os
-from flask import Flask
+from flask import Flask, redirect
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
+from flask_bootstrap import Bootstrap
 from config import app_config
+
 
 db = SQLAlchemy()
 migrate = Migrate()
 
 
+from config import app_config, app_active
+
+
 def create_app():
-    env = os.getenv("FLASK_ENV", "development")
-    config = app_config[env]
+    config = app_config.get(app_active, app_config["development"])
+    from admin.Admin import start_views
 
     app = Flask(__name__)
     app.secret_key = config.SECRET
@@ -18,6 +23,8 @@ def create_app():
     app.config["SQLALCHEMY_DATABASE_URI"] = config.SQLALCHEMY_DATABASE_URI
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
     app.config["FLASK_ADMIN_SWATCH"] = "cosmo"
+    start_views(app, db)
+    Bootstrap(app)
 
     db.init_app(app)
     migrate.init_app(app, db)
@@ -33,8 +40,8 @@ def create_app():
 
     @app.route("/")
     def index():
-        return "App Flask funcionando."
+        return redirect("/admin/")
 
-    from model import User, Role, Impressora, Chamado, Bilhetagem
+    from models import User, Role, Impressora, Chamado, Bilhetagem
 
     return app

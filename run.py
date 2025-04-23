@@ -1,13 +1,10 @@
-from config import app_config, app_active
 from app import create_app
 
-config = app_config[app_active]
-
 if __name__ == "__main__":
-    create_app(config)
-    config.APP.run(
-        host=config.IP_HOST,
-        port=config.PORT_HOST,
-        debug=config.DEBUG,
+    app = create_app()
+    app.run(
+        host=app.config.get("IP_HOST", "localhost"),
+        port=app.config.get("PORT_HOST", 8000),
+        debug=app.config.get("DEBUG", True),
         use_reloader=False,
     )
