@@ -91,38 +91,42 @@ class Localizacao(db.Model):
 class Impressora(db.Model):
     __tablename__ = "impressoras"
 
-    serie = db.Column(db.String(50), primary_key=True)
-    modelo = db.Column(db.String(50), nullable=False)
-    ip = db.Column(db.String(50), unique=True, nullable=False)
-    localizacao = db.Column(db.String(50), nullable=False)
+    Serie = db.Column(db.String(50), primary_key=True)
+    Modelo = db.Column(db.String(50), nullable=False)
+    Contrato = db.Column(db.String(4), nullable=False)
+    Secretaria = db.Column(db.String(10), nullable=False)
+    Localizacao = db.Column(db.String(50), nullable=False)
+    IP = db.Column(db.String(50), nullable=False)
+    Tipo = db.Column(db.String(15), nullable=False)
     # localizacao_id = db.Column(
     #     db.Integer, db.ForeignKey("localizacoes.id"), nullable=False
     # )
     # localizacao = relationship("Localizacao", back_populates="impressoras")
-    status = db.Column(db.String(50), nullable=False)
-    data_de_criacao = db.Column(
+    Data_de_criacao = db.Column(
         db.DateTime(6), default=db.func.current_timestamp(), nullable=False
     )
-    ultimo_update = db.Column(
+    Ultimo_update = db.Column(
         db.DateTime(6), onupdate=db.func.current_timestamp(), nullable=False
     )
-    chamados = relationship("Chamado", back_populates="impressora")
-    bilhetagem = relationship("Bilhetagem", back_populates="impressora")
+    Chamados = relationship("Chamado", back_populates="Impressora")
+    Bilhetagem = relationship("Bilhetagem", back_populates="Impressora")
 
 
 class Chamado(db.Model):
     __tablename__ = "chamados"
 
-    id = db.Column(db.Integer, primary_key=True)
-    titulo = db.Column(db.String(50), nullable=False)
-    impressora_id = db.Column(
-        db.String(50), db.ForeignKey("impressoras.serie"), nullable=False
+    ID = db.Column(db.Integer, primary_key=True)
+    Título = db.Column(db.String(50), nullable=False)
+    Localizacao = db.Column(db.String(50), nullable=False)
+    Descricao = db.Column(db.String(2000), nullable=False)
+    Serie_impressora = db.Column(
+        db.String(50), db.ForeignKey("impressoras.Serie"), nullable=False
     )
-    impressora = relationship("Impressora", back_populates="chamados")
-    data_de_criacao = db.Column(
+    Impressora = relationship("Impressora", back_populates="Chamados")
+    Data_de_criacao = db.Column(
         db.DateTime(6), default=db.func.current_timestamp(), nullable=False
     )
-    ultimo_update = db.Column(
+    Ultimo_update = db.Column(
         db.DateTime(6), onupdate=db.func.current_timestamp(), nullable=False
     )
 
@@ -130,18 +134,18 @@ class Chamado(db.Model):
 class Bilhetagem(db.Model):
     __tablename__ = "bilhetagem"
 
-    id = db.Column(db.Integer, primary_key=True)
-    serie = db.Column(db.String(50), db.ForeignKey("impressoras.serie"), nullable=False)
-    impressora = relationship("Impressora", back_populates="bilhetagem")
-    contrato = db.Column(db.String(50), nullable=False)
-    localizacao = db.Column(db.String(50), nullable=False)
-    tipo = db.Column(db.String(50), nullable=False)
-    ano = db.Column(db.String(50), nullable=False)
-    mes = db.Column(db.String(50), nullable=False)
-    total = db.Column(db.Integer, nullable=False)
-    data_de_criacao = db.Column(
+    ID = db.Column(db.Integer, primary_key=True)
+    Serie = db.Column(db.String(50), db.ForeignKey("impressoras.Serie"), nullable=False)
+    Impressora = relationship("Impressora", back_populates="Bilhetagem")
+    Contrato = db.Column(db.String(50), nullable=False)
+    Localizacao = db.Column(db.String(50), nullable=False)
+    Tipo = db.Column(db.String(50), nullable=False)
+    Ano = db.Column(db.String(50), nullable=False)
+    Mes = db.Column(db.String(50), nullable=False)
+    Bilhetagem = db.Column(db.Integer, nullable=False)
+    Data_de_criacao = db.Column(
         db.DateTime(6), default=db.func.current_timestamp(), nullable=False
     )
-    ultimo_update = db.Column(
+    Ultimo_update = db.Column(
         db.DateTime(6), onupdate=db.func.current_timestamp(), nullable=False
     )

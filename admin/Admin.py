@@ -16,8 +16,10 @@ def start_views(app, db):
     )
     admin.add_link(MenuLink(name="Logout", url="/logout/"))
 
-    admin.add_view(GenericView(Role, db.session, "Funções"))
-    admin.add_view(UserView(User, db.session, "Usuários"))
-    admin.add_view(GenericView(Impressora, db.session, "Impressoras"))
-    admin.add_view(GenericView(Chamado, db.session, "Chamados"))
-    admin.add_view(GenericView(Bilhetagem, db.session, "Bilhetagem"))
+    admin.add_view(GenericView(Role, db.session, "Funções", category="Admin"))
+    admin.add_view(UserView(User, db.session, "Usuários", category="Admin"))
+    admin.add_view(
+        GenericView(Impressora, db.session, "Impressoras", category="Gestão")
+    )
+    admin.add_view(GenericView(Chamado, db.session, "Chamados", category="Gestão"))
+    admin.add_view(GenericView(Bilhetagem, db.session, "Bilhetagem", category="Gestão"))

@@ -38,9 +38,9 @@ def create_app():
         response.headers["Access-Control-Allow-Methods"] = "GET,POST,PUT,DELETE,OPTIONS"
         return response
 
-    @app.route("/")
-    def index():
-        return redirect("/admin/")
+    @app.route("/report", methods=["POST"])
+    def report():
+        pass
 
     from models import User, Role, Impressora, Chamado, Bilhetagem
 

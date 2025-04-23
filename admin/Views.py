@@ -37,15 +37,23 @@ class HomeView(AdminIndexView):
 class UserView(ModelView):
     column_exclude_list = ["password"]
     form_excluded_columns = ["last_update"]
+
     form_columns = [
+        "id",
         "username",
         "email",
         "password",
-        "ativo",
         "funcao",
         "data_de_criacao",
-        "ultimo_update",
+        "ativo",
     ]
+
+    form_widget_args = {
+        "password": {
+            "autocomplete": "off",
+            "type": "password",
+        }
+    }
 
     def on_model_change(self, form, User, is_created):
         if form.password.data is not None:
@@ -55,6 +63,12 @@ class UserView(ModelView):
 
     def is_accessible(self):
         return True
+
+    # def inaccessible_callback(self, name, **kwargs):
+    #    if current_user.is_authenticated:
+    #        return redirect("/admin/")
+    #    else:
+    #        return redirect("/login/")
 
 
 class GenericView(ModelView):
