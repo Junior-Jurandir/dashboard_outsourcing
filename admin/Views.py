@@ -76,6 +76,7 @@ class UserView(ModelView):
 class GenericView(ModelView):
     column_exclude_list = ["Data_de_criacao"]
     column_exclude_list = ["Ultimo_update"]
+    form_excluded_columns = ["last_update"]
 
     def is_accessible(self):
         return True
@@ -90,6 +91,7 @@ class GenericView(ModelView):
 
 
 class ChamadoView(GenericView):
+    form_excluded_columns = ["last_update"]
     column_formatters = {
         "id": lambda v, c, m, p: Markup(
             f'<a href="https://itsm.santanadeparnaiba.sp.gov.br/front/ticket.form.php?id={m.id}" target="_blank">{m.id}</a>'
