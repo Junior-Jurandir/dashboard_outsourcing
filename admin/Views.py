@@ -72,6 +72,9 @@ class UserView(ModelView):
 
 
 class GenericView(ModelView):
+    column_exclude_list = ["Data_de_criacao"]
+    column_exclude_list = ["Ultimo_update"]
+
     def is_accessible(self):
         return True
 
@@ -80,3 +83,5 @@ class GenericView(ModelView):
     #        return redirect("/admin/")
     #    else:
     #        return redirect("/login/")
+
+    column_display_pk = True  # Isso força a exibição da chave primária

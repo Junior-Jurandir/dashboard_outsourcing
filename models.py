@@ -31,7 +31,10 @@ class User(db.Model, UserMixin):
         db.DateTime(6), default=db.func.current_timestamp(), nullable=False
     )
     ultimo_update = db.Column(
-        db.DateTime(6), onupdate=db.func.current_timestamp(), nullable=False
+        db.DateTime(6),
+        default=db.func.current_timestamp(),
+        onupdate=db.func.current_timestamp(),
+        nullable=False,
     )
     ativo = db.Column(db.Boolean, default=True, nullable=False)
     role = db.Column(db.Integer, db.ForeignKey(Role.id), nullable=False)
@@ -106,7 +109,10 @@ class Impressora(db.Model):
         db.DateTime(6), default=db.func.current_timestamp(), nullable=False
     )
     Ultimo_update = db.Column(
-        db.DateTime(6), onupdate=db.func.current_timestamp(), nullable=False
+        db.DateTime(6),
+        default=db.func.current_timestamp(),
+        onupdate=db.func.current_timestamp(),
+        nullable=False,
     )
     Chamados = relationship("Chamado", back_populates="Impressora")
     Bilhetagem = relationship("Bilhetagem", back_populates="Impressora")
@@ -127,7 +133,10 @@ class Chamado(db.Model):
         db.DateTime(6), default=db.func.current_timestamp(), nullable=False
     )
     Ultimo_update = db.Column(
-        db.DateTime(6), onupdate=db.func.current_timestamp(), nullable=False
+        db.DateTime(6),
+        default=db.func.current_timestamp(),
+        onupdate=db.func.current_timestamp(),
+        nullable=False,
     )
 
 
@@ -147,5 +156,8 @@ class Bilhetagem(db.Model):
         db.DateTime(6), default=db.func.current_timestamp(), nullable=False
     )
     Ultimo_update = db.Column(
-        db.DateTime(6), onupdate=db.func.current_timestamp(), nullable=False
+        db.DateTime(6),
+        default=db.func.current_timestamp(),
+        onupdate=db.func.current_timestamp(),
+        nullable=False,
     )
