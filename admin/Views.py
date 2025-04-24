@@ -2,6 +2,8 @@ from flask_admin import AdminIndexView, expose
 from flask_admin.contrib.sqla import ModelView
 from flask_login import current_user
 from flask import redirect
+from flask_admin.helpers import get_url
+from markupsafe import Markup
 
 from config import app_config, app_active
 from models import *
@@ -85,3 +87,11 @@ class GenericView(ModelView):
     #        return redirect("/login/")
 
     column_display_pk = True  # Isso força a exibição da chave primária
+
+
+class ChamadoView(GenericView):
+    column_formatters = {
+        "id": lambda v, c, m, p: Markup(
+            f'<a href="https://itsm.santanadeparnaiba.sp.gov.br/front/ticket.form.php?id={m.id}" target="_blank">{m.id}</a>'
+        )
+    }
