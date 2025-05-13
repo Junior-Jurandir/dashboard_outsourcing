@@ -9,7 +9,7 @@ from models import *
 def start_views(app, db):
     admin = Admin(
         app,
-        name="Dashboard",
+        name="Outsourcing",
         base_template="admin/base.html",
         template_mode="bootstrap3",
         index_view=HomeView(),

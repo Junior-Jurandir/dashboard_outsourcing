@@ -1,5 +1,6 @@
 from flask_admin import AdminIndexView, expose
 from flask_admin.contrib.sqla import ModelView
+from sqlalchemy.inspection import inspect
 from flask_login import current_user
 from flask import redirect
 from flask_admin.helpers import get_url
@@ -63,8 +64,19 @@ class UserView(ModelView):
         else:
             del form.password
 
+    def __init__(self, model, session, **kwargs):
+        super().__init__(model, session, **kwargs)
+
+        columns_to_exclude = set(self.column_exclude_list or [])
+        self.column_filters = [
+            c.key for c in inspect(model).mapper.column_attrs
+            if c.key not in columns_to_exclude
+        ]
+
     def is_accessible(self):
         return True
+    
+    
 
     # def inaccessible_callback(self, name, **kwargs):
     #    if current_user.is_authenticated:
@@ -77,6 +89,16 @@ class GenericView(ModelView):
     column_exclude_list = ["Data_de_criacao"]
     column_exclude_list = ["Ultimo_update"]
     form_excluded_columns = ["last_update"]
+
+    def __init__(self, model, session, **kwargs):
+        super().__init__(model, session, **kwargs)
+
+        # Gera filtros de forma automática para todas as colunas exceto as excluídas
+        columns_to_exclude = set(self.column_exclude_list or [])
+        self.column_filters = [
+            c.key for c in inspect(model).mapper.column_attrs
+            if c.key not in columns_to_exclude
+        ]
 
     def is_accessible(self):
         return True
@@ -93,7 +115,16 @@ class GenericView(ModelView):
 class ChamadoView(GenericView):
     form_excluded_columns = ["last_update"]
     column_formatters = {
-        "id": lambda v, c, m, p: Markup(
-            f'<a href="https://itsm.santanadeparnaiba.sp.gov.br/front/ticket.form.php?id={m.id}" target="_blank">{m.id}</a>'
+        "ID": lambda v, c, m, p: Markup(
+            f'<a href="https://itsm.santanadeparnaiba.sp.gov.br/front/ticket.form.php?id={m.ID}" target="_blank">{m.ID}</a>'
         )
     }
+
+    def __init__(self, model, session, **kwargs):
+        super().__init__(model, session, **kwargs)
+
+        columns_to_exclude = set(self.column_exclude_list or [])
+        self.column_filters = [
+            c.key for c in inspect(model).mapper.column_attrs
+            if c.key not in columns_to_exclude
+        ]
