@@ -27,10 +27,10 @@ class User(db.Model, UserMixin):
     username = db.Column(db.String(50), unique=True, nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(120), nullable=False)
-    data_de_criacao = db.Column(
+    DT_criacao = db.Column(
         db.DateTime(6), default=db.func.current_timestamp(), nullable=False
     )
-    ultimo_update = db.Column(
+    DT_mod = db.Column(
         db.DateTime(6),
         default=db.func.current_timestamp(),
         onupdate=db.func.current_timestamp(),
@@ -61,9 +61,9 @@ class User(db.Model, UserMixin):
         except Exception as e:
             print("Erro ao criptografar a senha: %s" % e)
 
-    def verify_password(self, password_no_hash, password_database):
+    def verify_password(self, password_no_hash, password_DTbase):
         try:
-            return pbkdf2_sha256.verify(password_no_hash, password_database)
+            return pbkdf2_sha256.verify(password_no_hash, password_DTbase)
         except ValueError as e:
             print("Erro ao verificar a senha: %s" % e)
             return False
@@ -78,10 +78,10 @@ class Localizacao(db.Model):
     endereco = db.Column(db.String(120), unique=True, nullable=False)
     contato = db.Column(db.String(15), nullable=False)
     secretaria = db.Column(db.String(50), nullable=False)
-    data_de_criacao = db.Column(
+    DT_criacao = db.Column(
         db.DateTime(6), default=db.func.current_timestamp(), nullable=False
     )
-    ultimo_update = db.Column(
+    DT_mod = db.Column(
         db.DateTime(6), onupdate=db.func.current_timestamp(), nullable=False
     )
     impressoras = relationship("Impressora", back_populates="localizacao")
@@ -98,17 +98,17 @@ class Impressora(db.Model):
     Modelo = db.Column(db.String(50), nullable=False)
     Contrato = db.Column(db.String(4), nullable=False)
     Secretaria = db.Column(db.String(10), nullable=False)
-    Localizacao = db.Column(db.String(50), nullable=False)
+    Localizacao = db.Column(db.String(255), nullable=False)
     IP = db.Column(db.String(50), nullable=False)
     Tipo = db.Column(db.String(15), nullable=False)
     # localizacao_id = db.Column(
     #     db.Integer, db.ForeignKey("localizacoes.id"), nullable=False
     # )
     # localizacao = relationship("Localizacao", back_populates="impressoras")
-    Data_de_criacao = db.Column(
+    DT_criacao = db.Column(
         db.DateTime(6), default=db.func.current_timestamp(), nullable=False
     )
-    Ultimo_update = db.Column(
+    DT_mod = db.Column(
         db.DateTime(6),
         default=db.func.current_timestamp(),
         onupdate=db.func.current_timestamp(),
@@ -119,25 +119,22 @@ class Impressora(db.Model):
 
 
 class Chamado(db.Model):
-    __tablename__ = "chamados"
+    __tablename__ = 'chamados'
 
-    ID = db.Column(db.Integer, primary_key=True)
-    Título = db.Column(db.String(50), nullable=False)
-    Localizacao = db.Column(db.String(50), nullable=False)
-    Descricao = db.Column(db.String(2000), nullable=False)
-    Serie_impressora = db.Column(
-        db.String(50), db.ForeignKey("impressoras.Serie"), nullable=False
-    )
-    Impressora = relationship("Impressora", back_populates="Chamados")
-    Data_de_criacao = db.Column(
-        db.DateTime(6), default=db.func.current_timestamp(), nullable=False
-    )
-    Ultimo_update = db.Column(
-        db.DateTime(6),
-        default=db.func.current_timestamp(),
-        onupdate=db.func.current_timestamp(),
-        nullable=False,
-    )
+    ID = db.Column(db.Integer, primary_key=True)  # ID do chamado no GLPI
+    Titulo = db.Column(db.String(255), nullable=False)  # Título do chamado
+    Descricao = db.Column(db.Text)  # Descrição
+    Status = db.Column(db.Integer)  # Status (1=novo, 2=andamento, etc)
+    Prioridade = db.Column(db.Integer)  # Prioridade
+    ID_categoria_itil = db.Column(db.Integer)  # Categoria ITIL
+    ID_grupo_tecnico = db.Column(db.Integer)  # Grupo atribuído
+    ID_requerente = db.Column(db.Integer)  # Usuário solicitante
+    DT_criacao = db.Column(db.DateTime)  # Quando foi criado no GLPI
+    DT_mod = db.Column(db.DateTime)  # Última modificação no GLPI
+    DT_sync = db.Column(db.DateTime, default=db.datetime.utcnow)  # Última vez que foi sincronizado localmente
+
+    def __repr__(self):
+        return f"<Ticket(id={self.ID}, name='{self.Título}', status={self.Status})>"
 
 
 class Bilhetagem(db.Model):
@@ -147,15 +144,15 @@ class Bilhetagem(db.Model):
     Serie = db.Column(db.String(50), db.ForeignKey("impressoras.Serie"), nullable=False)
     Impressora = relationship("Impressora", back_populates="Bilhetagem")
     Contrato = db.Column(db.String(50), nullable=False)
-    Localizacao = db.Column(db.String(50), nullable=False)
+    Localizacao = db.Column(db.String(255), nullable=False)
     Tipo = db.Column(db.String(50), nullable=False)
     Ano = db.Column(db.String(50), nullable=False)
     Mes = db.Column(db.String(50), nullable=False)
-    Bilhetagem = db.Column(db.Integer, nullable=False)
-    Data_de_criacao = db.Column(
+    QT_impresoes = db.Column(db.Integer, nullable=False)
+    DT_criacao = db.Column(
         db.DateTime(6), default=db.func.current_timestamp(), nullable=False
     )
-    Ultimo_update = db.Column(
+    DT_mod = db.Column(
         db.DateTime(6),
         default=db.func.current_timestamp(),
         onupdate=db.func.current_timestamp(),

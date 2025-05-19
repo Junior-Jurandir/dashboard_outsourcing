@@ -1,5 +1,2 @@
-/db
-/venv
-venv
 config.py
 .flaskenv

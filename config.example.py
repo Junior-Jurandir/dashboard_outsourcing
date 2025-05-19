@@ -23,7 +23,7 @@ class DevelopmentConfig(Config):
     DB_HOST = "localhost"
     DB_PORT = 3306
     DB_NAME = "outsourcing_dev"
-    SQLALCHEMY_DATABASE_URI = "mysql+pymysql://{}:{}@{}:{}/{}".format(
+    SQLALCHEMY_DATABASE_URI = "mssql+pyodbc://{}:{}@{}:{}/{}".format(
         DB_USER, DB_PASSWORD, DB_HOST, DB_PORT, DB_NAME
     )
 
@@ -40,7 +40,7 @@ class TestingConfig(Config):
     DB_HOST = "localhost"
     DB_PORT = 3306
     DB_NAME = "outsourcing_test"
-    SQLALCHEMY_DATABASE_URI = "mysql+pymysql://{}:{}@{}:{}/{}".format(
+    SQLALCHEMY_DATABASE_URI = "mssql+pyodbc://{}:{}@{}:{}/{}".format(
         DB_USER, DB_PASSWORD, DB_HOST, DB_PORT, DB_NAME
     )
 
@@ -56,7 +56,7 @@ class ProductionConfig(Config):
     DB_HOST = "localhost"
     DB_PORT = 3306
     DB_NAME = "outsourcing_prod"
-    SQLALCHEMY_DATABASE_URI = "mysql+pymysql://{}:{}@{}:{}/{}".format(
+    SQLALCHEMY_DATABASE_URI = "mssql+pyodbc://{}:{}@{}:{}/{}".format(
         DB_USER, DB_PASSWORD, DB_HOST, DB_PORT, DB_NAME
     )
 
